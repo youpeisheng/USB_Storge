@@ -7,6 +7,7 @@ import com.example.usb_storge.utils.FileUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -14,7 +15,8 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int datadefault=999999;
-
+    private static final String name_package="com.example.usb_storge";
+    private static final String name_data="dug_data";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         btn_write_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { //将数据写入
-                SharedPreferences.Editor editor=getSharedPreferences("Data",MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor=getSharedPreferences(name_data,MODE_PRIVATE).edit();
                 editor.putInt("name_1",1);
                 editor.putInt("name_2",2);
                 editor.putInt("name_3",3);
@@ -38,8 +40,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { //将数据读取出来
             File path1=getCacheDir();
-
-            SharedPreferences pref=getSharedPreferences("Data",MODE_PRIVATE);
+            String path_data="/data/data/"+name_package+"/shared_prefs/"+name_data+".xml";
+            if(FileUtils.isFileExists(path_data)){
+                Toast.makeText(MainActivity.this,"存在"+path_data,Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(MainActivity.this,"不存在"+path_data,Toast.LENGTH_SHORT).show();
+            }
+            SharedPreferences pref=getSharedPreferences(name_data,MODE_PRIVATE);
                 int name_1=pref.getInt("name_1",datadefault);
                 int name_2=pref.getInt("name_2",datadefault);
                 int name_3=pref.getInt("name_3",datadefault);
