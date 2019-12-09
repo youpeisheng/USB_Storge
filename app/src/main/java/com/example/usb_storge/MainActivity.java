@@ -75,8 +75,10 @@ public class MainActivity extends AppCompatActivity {
 //                }else {
 //                    Toast.makeText(MainActivity.this,"不存在"+DIR_UDISK_AIEXPRESS,Toast.LENGTH_SHORT).show();
 //                };
-                if(!FileUtils.isFileExists(path_data_Machine)){
-                    Log.e(TAG,"not exits");
+                if(FileUtils.isFileExists(DIR_UDISK_AIEXPRESS+name_data+".xml")){
+                    FileUtils.delete(DIR_UDISK_AIEXPRESS+name_data+".xml");
+                    if(!FileUtils.isFileExists(DIR_UDISK_AIEXPRESS+name_data+".xml"))
+                        Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
                 }
                 if(FileUtils.copyFile(path_data_Machine,DIR_UDISK_AIEXPRESS+name_data+".xml")){
                     Toast.makeText(MainActivity.this,"复制成功",Toast.LENGTH_SHORT).show();
@@ -89,7 +91,23 @@ public class MainActivity extends AppCompatActivity {
         btn_copydata_toMachine.setOnClickListener(new View.OnClickListener() { //将USB 数据拷贝到仪器内部
             @Override
             public void onClick(View v) {
-
+                if(FileUtils.copyFile(DIR_UDISK_AIEXPRESS+name_data+".xml",path_data_Machine)){
+                    Toast.makeText(MainActivity.this,"复制成功",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this,"复制失败",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        Button btn_deleteData_Machine=(Button) findViewById(R.id.deleteData_Machine);
+        btn_deleteData_Machine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(FileUtils.isFileExists(path_data_Machine)){
+                    FileUtils.delete(path_data_Machine);
+                    if(!FileUtils.isFileExists(path_data_Machine))
+                        Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                    else Toast.makeText(MainActivity.this,"删除失败",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

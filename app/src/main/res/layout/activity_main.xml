@@ -35,6 +35,13 @@
         android:textAllCaps="false"
         android:text="U 盘 数据 拷贝到仪器内部"
         />
+    <Button
+        android:id="@+id/deleteData_Machine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="删除 本机 数据"
+        />
     <TextView
         android:id="@+id/textView_data"
         android:layout_width="match_parent"
