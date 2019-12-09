@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import com.example.usb_storge.utils.FileUtils;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int datadefault=999999;
     private static final String name_package="com.example.usb_storge";
     private static final String name_data="dug_data";
+    public static final String DIR_UDISK = File.separator + "storage" + File.separator + "udisk" + File.separator;
+    public static final String DIR_UDISK_AIEXPRESS = DIR_UDISK + "AiExpress" + File.separator;
+    public static final String path_data_Machine="/data/data/"+name_package+"/shared_prefs/"+name_data+".xml";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("name_2",2);
                 editor.putInt("name_3",3);
                 editor.putInt("name_4",4);
+                editor.putInt("name_5",4);
                 editor.apply();
             }
         });
@@ -40,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { //将数据读取出来
             File path1=getCacheDir();
-            String path_data="/data/data/"+name_package+"/shared_prefs/"+name_data+".xml";
-            if(FileUtils.isFileExists(path_data)){
-                Toast.makeText(MainActivity.this,"存在"+path_data,Toast.LENGTH_SHORT).show();
+
+            if(FileUtils.isFileExists(path_data_Machine)){
+                Toast.makeText(MainActivity.this,"存在"+path_data_Machine,Toast.LENGTH_SHORT).show();
             }else {
-                Toast.makeText(MainActivity.this,"不存在"+path_data,Toast.LENGTH_SHORT).show();
-            }
+                Toast.makeText(MainActivity.this,"不存在"+path_data_Machine,Toast.LENGTH_SHORT).show();
+            };
             SharedPreferences pref=getSharedPreferences(name_data,MODE_PRIVATE);
                 int name_1=pref.getInt("name_1",datadefault);
                 int name_2=pref.getInt("name_2",datadefault);
@@ -64,7 +70,19 @@ public class MainActivity extends AppCompatActivity {
         btn_copydata_toUSB.setOnClickListener(new View.OnClickListener() { //拷贝数据到U盘
             @Override
             public void onClick(View v) {
-
+//                if(FileUtils.isDir(DIR_UDISK_AIEXPRESS)){
+//                    Toast.makeText(MainActivity.this,"存在"+DIR_UDISK_AIEXPRESS,Toast.LENGTH_SHORT).show();
+//                }else {
+//                    Toast.makeText(MainActivity.this,"不存在"+DIR_UDISK_AIEXPRESS,Toast.LENGTH_SHORT).show();
+//                };
+                if(!FileUtils.isFileExists(path_data_Machine)){
+                    Log.e(TAG,"not exits");
+                }
+                if(FileUtils.copyFile(path_data_Machine,DIR_UDISK_AIEXPRESS+name_data+".xml")){
+                    Toast.makeText(MainActivity.this,"复制成功",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this,"复制失败",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         Button btn_copydata_toMachine=(Button) findViewById(R.id.copydata_toMachine);
