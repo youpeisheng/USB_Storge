@@ -3,7 +3,10 @@ package com.example.usb_storge;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import com.example.usb_storge.utils.FileIOUtils;
 import com.example.usb_storge.utils.FileUtils;
+import com.example.usb_storge.utils.SPUtils;
 
 import android.util.Log;
 import android.view.View;
@@ -45,25 +48,34 @@ public class MainActivity extends AppCompatActivity {
         btn_read_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { //将数据读取出来
-            File path1=getCacheDir();
-
+            textView_read.setText("");
             if(FileUtils.isFileExists(path_data_Machine)){
                 Toast.makeText(MainActivity.this,"存在"+path_data_Machine,Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(MainActivity.this,"不存在"+path_data_Machine,Toast.LENGTH_SHORT).show();
-            };
-            SharedPreferences pref=getSharedPreferences(name_data,MODE_PRIVATE);
-                int name_1=pref.getInt("name_1",datadefault);
-                int name_2=pref.getInt("name_2",datadefault);
-                int name_3=pref.getInt("name_3",datadefault);
-                int name_4=pref.getInt("name_4",datadefault);
-                int name_5=pref.getInt("name_5",datadefault);
-                textView_read.setText("");
+                //使用系统原生方式读取
+//                SharedPreferences pref=getSharedPreferences(name_data,MODE_PRIVATE);
+//                int name_1=pref.getInt("name_1",datadefault);
+//                int name_2=pref.getInt("name_2",datadefault);
+//                int name_3=pref.getInt("name_3",datadefault);
+//                int name_4=pref.getInt("name_4",datadefault);
+//                int name_5=pref.getInt("name_5",datadefault);
+                //换SPUtils 读取
+                SPUtils data=SPUtils.getInstance(name_data,MODE_PRIVATE);
+                int name_1=data.getInt("name_1",datadefault);
+                int name_2=data.getInt("name_2",datadefault);
+                int name_3=data.getInt("name_3",datadefault);
+                int name_4=data.getInt("name_4",datadefault);
+                int name_5=data.getInt("name_5",datadefault);
+
                 textView_read.append(Integer.toString(name_1)+"\r\n");
                 textView_read.append(Integer.toString(name_2)+"\r\n");
                 textView_read.append(Integer.toString(name_3)+"\r\n");
                 textView_read.append(Integer.toString(name_4)+"\r\n");
                 textView_read.append(Integer.toString(name_5)+"\r\n");
+                String xmlBuffer=FileIOUtils.readFile2String(path_data_Machine);
+                textView_read.append(xmlBuffer);
+            }else {
+                Toast.makeText(MainActivity.this,"不存在"+path_data_Machine,Toast.LENGTH_SHORT).show();
+            };
             }
         });
         Button btn_copydata_toUSB=(Button) findViewById(R.id.copydata_toUSB);
