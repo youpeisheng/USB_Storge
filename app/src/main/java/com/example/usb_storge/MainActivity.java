@@ -48,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
         btn_write_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { //将数据写入
+                if(FileUtils.isFileExists(path_data_Machine)){
+                    FileUtils.delete(path_data_Machine);
+                    if(!FileUtils.isFileExists(path_data_Machine))
+                        Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                    else Toast.makeText(MainActivity.this,"删除失败",Toast.LENGTH_SHORT).show();
+                }
                 SharedPreferences.Editor editor=getSharedPreferences(name_data,Context.MODE_PRIVATE+Context.MODE_MULTI_PROCESS).edit();
                 editor.putInt(name_1,1);
                 editor.putInt(name_2,2);
