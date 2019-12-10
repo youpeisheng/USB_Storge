@@ -42,6 +42,13 @@
         android:textAllCaps="false"
         android:text="删除 本机 数据"
         />
+    <Button
+        android:id="@+id/readUSB_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="读取USB 盘 数据"
+        />
     <TextView
         android:id="@+id/textView_data"
         android:layout_width="match_parent"
