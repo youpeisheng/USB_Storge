@@ -1,6 +1,10 @@
 package com.example.usb_storge;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -15,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Map;
+import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,22 +55,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { //将数据读取出来
             textView_read.setText("");
+
             if(FileUtils.isFileExists(path_data_Machine)){
                 Toast.makeText(MainActivity.this,"存在"+path_data_Machine,Toast.LENGTH_SHORT).show();
                 //使用系统原生方式读取
-//                SharedPreferences pref=getSharedPreferences(name_data,MODE_PRIVATE);
-//                int name_1=pref.getInt("name_1",datadefault);
-//                int name_2=pref.getInt("name_2",datadefault);
-//                int name_3=pref.getInt("name_3",datadefault);
-//                int name_4=pref.getInt("name_4",datadefault);
-//                int name_5=pref.getInt("name_5",datadefault);
-                //换SPUtils 读取
-                SPUtils data=SPUtils.getInstance(name_data,MODE_PRIVATE);
-                int name_1=data.getInt("name_1",datadefault);
-                int name_2=data.getInt("name_2",datadefault);
-                int name_3=data.getInt("name_3",datadefault);
-                int name_4=data.getInt("name_4",datadefault);
-                int name_5=data.getInt("name_5",datadefault);
+                SharedPreferences pref=getSharedPreferences(name_data,MODE_PRIVATE+ Context.MODE_MULTI_PROCESS);
+                int name_1=pref.getInt("name_1",datadefault);
+                int name_2=pref.getInt("name_2",datadefault);
+                int name_3=pref.getInt("name_3",datadefault);
+                int name_4=pref.getInt("name_4",datadefault);
+                int name_5=pref.getInt("name_5",datadefault);
+//                //换SPUtils 读取
+//                SPUtils data=SPUtils.getInstance(name_data,MODE_PRIVATE);
+//                int name_1=data.getInt("name_1",datadefault);
+//                int name_2=data.getInt("name_2",datadefault);
+//                int name_3=data.getInt("name_3",datadefault);
+//                int name_4=data.getInt("name_4",datadefault);
+//                int name_5=data.getInt("name_5",datadefault);
 
                 textView_read.append(Integer.toString(name_1)+"\r\n");
                 textView_read.append(Integer.toString(name_2)+"\r\n");
@@ -108,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(MainActivity.this,"复制失败",Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
         Button btn_deleteData_Machine=(Button) findViewById(R.id.deleteData_Machine);
@@ -122,5 +130,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 }
